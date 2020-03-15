@@ -1,0 +1,32 @@
+version: '2'
+services:   
+   zookeeper:
+    image: zookeeper:3.5
+    container_name: zookeeper
+    # restart: always
+    hostname: zookeeper
+    networks:
+         extnetwork:
+    ports:
+      - "2181:2181"
+
+   kafka:
+    image: wurstmeister/kafka:2.12-2.4.0
+    container_name: kafka
+    hostname: kafka
+    # restart: always
+    ports:
+      - "9092:9092"
+      - "7203:7203"
+    networks:
+         extnetwork:
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: 192.168.0.105  ##本机ip
+      KAFKA_ZOOKEEPER_CONNECT: "192.168.0.105:2181"
+ 
+networks:
+   extnetwork:
+      ipam:
+         config:
+         - subnet: 172.24.0.0/16
+           gateway: 172.24.0.1

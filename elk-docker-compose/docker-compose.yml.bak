@@ -1,0 +1,31 @@
+version: "3"
+services:
+  elasticsearch-1: #服务名称（不是容器名）
+    image: elasticsearch
+    ports:
+      - 9200:9200
+      - 9300:9300
+    container_name: elasticsearch-1  #容器名称
+    volumes:
+      - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+  kibina:
+    image: kibana
+    ports:
+      - 5601:5601
+    container_name: kibana
+    # 挂载文件
+    volumes:
+      - ./kibana.yml:/etc/kibana/kibana.yml
+    links:
+      - elasticsearch-1:es01 #容器关联的别名
+  logstash:
+    image: logstash
+    container_name: logstash
+    #挂载文件：1、自定义配置文件；2、logstash启动配置文件；3、文件读取的挂载路径
+    volumes:
+      - ./logstash.conf:/etc/logstash/conf.d/logstash.conf
+      - ./logstash.yml:/etc/logstash/logstash.yml
+      - ./1.txt:/etc/logstash/1.txt
+    links:
+      - elasticsearch-1:es01
+ 

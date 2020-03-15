@@ -1,0 +1,29 @@
+version: '3'
+services:
+  redis1:
+    image: redis:4.0.13
+    container_name: my_redis1
+    # 这句不加就运行默认的redis.conf文件了
+    command: redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./data6379:/data
+      - ./redis6379.conf:/usr/local/etc/redis/redis.conf
+  redis2:
+    image: redis:4.0.13
+    container_name: my_redis2
+    ports:
+      - "6380:6379"
+    volumes:
+      - ./data6380:/data
+      - ./redis6380.conf:/etc/redis/redis.config
+  redis3:
+    image: redis:4.0.13 
+    container_name: my_redis3
+    ports:
+      - "6381:6379"
+    volumes:
+      - ./data6381:/data
+      - ./redis6381.conf:/etc/redis/redis.config
+   
